@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>PROJECT_ATHERNA</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-error-container":        "#ffdad6",
+            "tertiary-fixed-dim":        "#584400",
+            "on-secondary-fixed":        "#410001",
+            "on-tertiary-fixed":         "#ffffff",
+            "on-surface-variant":        "#c6c6c6",
+            "surface-variant":           "#353535",
+            "on-tertiary":               "#241a00",
+            "outline-variant":           "#474747",
+            "secondary":                 "#ffb4aa",
+            "surface-container-lowest":  "#0e0e0e",
+            "on-tertiary-container":     "#000000",
+            "primary-fixed-dim":         "#454747",
+            "on-primary":                "#1a1c1c",
+            "secondary-fixed-dim":       "#ff8a7b",
+            "error":                     "#ffb4ab",
+            "tertiary-container":        "#b08c00",
+            "on-primary-container":      "#000000",
+            "tertiary-fixed":            "#745b00",
+            "surface-dim":               "#131313",
+            "surface-tint":              "#c6c6c7",
+            "inverse-surface":           "#e2e2e2",
+            "on-surface":                "#e2e2e2",
+            "surface-container-highest": "#353535",
+            "secondary-container":       "#930005",
+            "on-background":             "#e2e2e2",
+            "secondary-fixed":           "#ffb4aa",
+            "on-secondary":              "#410001",
+            "surface-container":         "#1f1f1f",
+            "on-tertiary-fixed-variant": "#ffe08b",
+            "on-primary-fixed-variant":  "#e2e2e2",
+            "surface":                   "#131313",
+            "on-error":                  "#690005",
+            "on-secondary-container":    "#ffdad5",
+            "outline":                   "#919191",
+            "surface-bright":            "#393939",
+            "surface-container-high":    "#2a2a2a",
+            "primary":                   "#ffffff",
+            "background":                "#131313",
+            "primary-container":         "#d4d4d4",
+            "surface-container-low":     "#1b1b1b",
+            "tertiary":                  "#ffe08b",
+            "on-primary-fixed":          "#ffffff",
+            "primary-fixed":             "#5d5f5f",
+            "inverse-on-surface":        "#303030",
+            "inverse-primary":           "#5d5f5f",
+            "on-secondary-fixed-variant":"#7e0004",
+            "error-container":           "#93000a",
+          },
+          borderRadius: {
+            "DEFAULT": "0px",
+            "lg":      "0px",
+            "xl":      "0px",
+            "full":    "9999px",
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body":     ["Inter"],
+            "label":    ["Inter"],
+            "mono":     ["Monospace", "Courier New"],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="atherna.css"/>
+</head>
+<body class="bg-background text-primary font-body selection:bg-primary selection:text-background overflow-hidden h-screen" id="root-body">
+  <!--Intro Overlay-->
+  <div class="fixed inset-0 z-[200] bg-black flex items-center justify-center pointer-events-none" id="intro-overlay">
+    <div class="intro-screen text-center">
+      <h2 class="font-headline font-black text-4xl md:text-7xl tracking-[0.2em] text-white leading-tight">
+        PROJECT<br/>ATHERNA
+      </h2>
+    </div>
+  </div>
+  <!--Scanline FX-->
+  <div class="fixed inset-0 scanline-overlay z-[100]"></div>
+  <div class="fixed inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent h-[2px] w-full animate-[scanline_4s_linear_infinite] z-[101]"></div>
+  <!--Top Bar-->
+  <header class="load-sequenced fixed top-0 w-full z-50 flex items-center px-6 h-16 bg-[#131313] border-b border-white/20" id="ui-header">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-white" style="font-size:20px">terminal</span>
+      <h1 class="font-headline uppercase tracking-[0.1em] text-sm md:text-lg font-bold text-white">PROJECT_ATHERNA</h1>
+    </div>
+    <div class="ml-auto flex items-center gap-6">
+      <div class="hidden md:flex gap-4">
+        <span class="text-white/40 font-mono text-[10px] tracking-widest uppercase">ENCRYPTION: AES_256</span>
+        <span class="text-white font-mono text-[10px] tracking-widest uppercase">UPLINK: ACTIVE</span>
+      </div>
+      <button class="hover:scale-[1.02] transition-transform duration-100" onclick="toggleSpotify()" title="Toggle Audio Stream">
+        <span class="material-symbols-outlined text-white/60 hover:text-white" style="font-size:20px" id="music-icon">music_note</span>
+      </button>
+      <button class="hover:scale-[1.02] transition-transform duration-100" onclick="toggleTerminal()">
+        <span class="material-symbols-outlined text-white/60 hover:text-white" style="font-size:20px">terminal</span>
+      </button>
+    </div>
+  </header>
+  <!--Terminal (Easter Egg :D only exit so far)-->
+  <div class="fixed inset-0 z-[110] bg-black/80 flex items-center justify-center hidden" id="terminal-overlay">
+    <div class="w-[500px] bg-[#131313] border border-primary/50 p-4 font-mono text-xs shadow-2xl">
+      <div class="flex justify-between items-center border-b border-primary/20 pb-2 mb-4">
+        <span class="text-primary font-bold uppercase tracking-widest">root@ATHERNA_PRTCL:~</span>
+        <button class="text-white/50 hover:text-white" onclick="toggleTerminal()">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+      <div class="h-32 overflow-y-auto mb-2 text-white/70" id="terminal-history">
+        <div>Project Atherna v1.0.0 Initialized...</div>
+        <div>Awaiting credentials...</div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-secondary">&gt;</span>
+        <input autofocus class="bg-transparent border-none focus:ring-0 p-0 text-white w-full uppercase" id="terminal-input" type="text"/>
+      </div>
+    </div>
+  </div>
+  <!--Left Side Bar-->
+  <aside class="load-sequenced fixed left-0 top-16 h-full w-[280px] border-r border-white/10 bg-[#1b1b1b] flex flex-col pt-4 pb-16 overflow-y-auto z-40" id="ui-sidenav">
+    <!--Profile -->
+    <div class="px-6 mb-6">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-surface-container-high relative">
+          <img alt="G&K_logo" class="w-full h-full object-cover opacity-80"
+            src="G&K_logo.png"/>
+        </div>
+        <div>
+          <h2 class="text-white text-base font-bold font-headline">SECTOR_01</h2>
+          <p class="text-[10px] text-outline font-mono">LAT_40.7128_LON_74.0060</p>
+        </div>
+      </div>
+    </div>
+    <!--Main Navigation (Still Not Working)-->
+    <nav class="flex flex-col gap-1">
+      <a class="flex items-center gap-4 px-6 py-3 bg-white text-[#131313] font-bold border-l-4 border-secondary font-mono text-xs uppercase tracking-widest" href="#">
+        <span class="material-symbols-outlined text-sm">radar</span>INTEL_RECON
+      </a>
+      <a class="flex items-center gap-4 px-6 py-3 text-[#c6c6c6] opacity-80 font-mono text-xs uppercase tracking-widest hover:bg-[#2a2a2a] hover:text-white" href="#">
+        <span class="material-symbols-outlined text-sm">military_tech</span>ARSENAL_STK
+      </a>
+      <a class="flex items-center gap-4 px-6 py-3 text-[#c6c6c6] opacity-80 font-mono text-xs uppercase tracking-widest hover:bg-[#2a2a2a] hover:text-white" href="#">
+        <span class="material-symbols-outlined text-sm">ads_click</span>OPS_COMMAND
+      </a>
+      <a class="flex items-center gap-4 px-6 py-3 text-[#c6c6c6] opacity-80 font-mono text-xs uppercase tracking-widest hover:bg-[#2a2a2a] hover:text-white" href="#">
+        <span class="material-symbols-outlined text-sm">inventory_2</span>LOG_SUPPLY
+      </a>
+    </nav>
+    <!--Secondary Navigation (Still Not Working)-->
+    <div class="mt-auto px-6 pt-6 border-t border-white/10">
+      <div class="flex flex-col gap-3 mb-4">
+        <a class="flex items-center gap-3 text-[#c6c6c6] font-mono text-[10px] uppercase hover:text-white" href="#">
+          <span class="material-symbols-outlined text-sm">list_alt</span>SYSTEM_LOGS
+        </a>
+        <a class="flex items-center gap-3 text-[#c6c6c6] font-mono text-[10px] uppercase hover:text-white" href="#">
+          <span class="material-symbols-outlined text-sm">enhanced_encryption</span>ENCRYPTION
+        </a>
+      </div>
+    </div>
+    <!--Mission Detailed (Still Not Working)-->
+    <div class="px-6 pt-4 border-t border-white/10 space-y-4">
+      <div class="text-[9px] font-mono text-white/30 uppercase tracking-widest mb-2">//MISSION_OBJ</div>
+      <div class="group cursor-pointer hover:opacity-100 transition-opacity">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="w-2 h-2 bg-secondary"></div>
+          <span class="text-[10px] font-bold tracking-widest uppercase text-white">SECURE_PERIMETER</span>
+        </div>
+        <p class="text-[9px] text-white/40 leading-tight font-mono">ESTABLISH CLASS 4 FIREWALL AROUND SECTOR 7G. INHIBIT EXTERNAL PACKET LEAKAGE.</p>
+      </div>
+      <div class="group cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="w-2 h-2 border border-white/40"></div>
+          <span class="text-[10px] font-bold tracking-widest uppercase">INTEL_RECOVERY</span>
+        </div>
+        <p class="text-[9px] text-white/40 leading-tight font-mono">DECRYPT FRAGMENTED DATA CORE FROM SUBSURFACE RELAY 09.</p>
+      </div>
+      <div class="group cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+        <div class="flex items-center gap-2 mb-1">
+          <div class="w-2 h-2 border border-white/40"></div>
+          <span class="text-[10px] font-bold tracking-widest uppercase">SIGNAL_BOOST</span>
+        </div>
+        <p class="text-[9px] text-white/40 leading-tight font-mono">RECALIBRATE TRANSMITTERS TO 440HZ TO OVERCOME ATMOSPHERIC INTERFERENCE.</p>
+      </div>
+    </div>
+    <!--Made by who?-->
+    <div class="px-6 py-4 border-t border-white/10 flex flex-col gap-0.5 opacity-50 select-none pointer-events-none">
+      <div class="text-[8px] font-mono uppercase tracking-[0.2em] text-transparent" style="-webkit-text-stroke: 0.5px white;">Made by Necho</div>
+      <div class="text-[8px] font-mono uppercase tracking-[0.2em] text-white">Made by Necho</div>
+      <div class="text-[8px] font-mono uppercase tracking-[0.2em] text-transparent" style="-webkit-text-stroke: 0.5px white;">Made by Necho</div>
+    </div>
+  </aside>
+  <!--Main Content-->
+  <main class="ml-[280px] mt-16 h-[calc(100vh-64px)] overflow-hidden flex gap-4 p-4" id="ui-main">
+    <!--Center Panel-->
+    <section class="flex-1 flex flex-col gap-4 min-w-0">
+      <!--Mission Feed-->
+      <div class="load-sequenced relative flex-1 bg-surface-container-low border border-white/10 p-1 min-h-0" id="ui-mission">
+        <div class="l-bracket-tl"></div><div class="l-bracket-tr"></div>
+        <div class="l-bracket-bl"></div><div class="l-bracket-br"></div>
+        <div class="absolute top-3 left-3 z-20">
+          <span class="text-[10px] font-mono text-primary bg-background px-2 py-1 border border-primary/30">//MISSION_FEED_01</span>
+        </div>
+        <div class="w-full h-full relative overflow-hidden bg-black">
+          <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>
+          <img class="w-full h-full object-cover opacity-40 grayscale"
+            src="Panoramic_1.png"/>
+          <!--Radar Rings-->
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="absolute w-64 h-64 border border-white/10 rounded-full"></div>
+            <div class="absolute w-40 h-40 border border-white/15 rounded-full"></div>
+            <div class="absolute w-16 h-16 border border-white/20 rounded-full"></div>
+          </div>
+          <!--HUD-->
+          <div class="absolute inset-0 p-6 flex flex-col justify-between pointer-events-none">
+            <div class="flex justify-between items-start">
+              <!--Threat Box (top-left)-->
+              <div class="font-mono text-secondary text-xs bg-black/80 p-2 border-l-2 border-secondary">
+                <p>THREAT_LVL : CRITICAL</p>
+                <p>TARGET_ID  : Osama_Bin_Laden</p>
+              </div>
+              <!--FPS + BUFFER + COORD stacked (top-right)-->
+              <div class="text-right font-mono text-white text-[10px] space-y-0.5">
+                <p>FPS: <span id="hud-fps">60.00</span></p>
+                <p>BUFFER: <span id="hud-buffer">1024KB</span></p>
+                <p class="mt-1 text-white font-mono text-[9px] uppercase tracking-widest">COORD: 34.0522° N, 118.2437° W</p>
+                <p class="text-white/20 font-mono text-[8px]">ALT: 12,440 FT</p>
+              </div>
+            </div>
+            <!--Center Radar-->
+            <div class="flex justify-center">
+              <div class="w-32 h-32 border border-white/20 rounded-full flex items-center justify-center relative">
+                <div class="w-0.5 h-12 bg-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 origin-bottom rotate-45 opacity-50"></div>
+                <div class="w-20 h-20 border border-white/10 rounded-full"></div>
+                <span class="material-symbols-outlined text-primary" style="font-size:20px">filter_center_focus</span>
+              </div>
+            </div>
+            <!--Bottom row: uplink left, SCANNING right-->
+            <div class="flex justify-between items-end">
+              <div class="space-y-1 font-mono text-[10px] text-white/60">
+                <p>UPLINK: <span id="hud-uplink">ACTIVE</span></p>
+                <p>SIGNAL: <span id="hud-signal">100%</span></p>
+                <p>LATENCY: <span id="hud-latency">300ms</span></p>
+              </div>
+              <div class="bg-secondary text-on-secondary px-3 py-1 font-headline font-black text-xs tracking-widest">SCANNING_SECTOR...</div>
+            </div>
+          </div>
+          <!--Pulse Dots-->
+          <div class="absolute top-1/3 left-1/2 w-2 h-2 bg-white rounded-full animate-ping pointer-events-none"></div>
+          <div class="absolute bottom-1/4 right-1/3 w-1.5 h-1.5 bg-secondary rounded-full animate-pulse pointer-events-none"></div>
+        </div>
+      </div>
+      <!--Stats Row-->
+      <div class="load-sequenced h-24 grid grid-cols-4 gap-3" id="ui-stats">
+        <!--CPU Usage-->
+        <div class="bg-surface-container-low border border-white/10 p-3 relative hover-flicker cursor-crosshair">
+          <p class="text-[9px] font-mono text-outline mb-1 uppercase">CPU_Usage</p>
+          <p class="text-xl font-headline font-bold" id="stat-temp">--%</p>
+          <div class="mt-2 w-full h-0.5 bg-surface-container-high overflow-hidden">
+            <div class="h-full bg-primary transition-all duration-700" id="stat-temp-bar" style="width:0%"></div>
+          </div>
+        </div>
+        <!--Memory Load-->
+        <div class="bg-surface-container-low border border-white/10 p-3 relative hover-flicker cursor-crosshair">
+          <p class="text-[9px] font-mono text-outline mb-1 uppercase">Memory_Load</p>
+          <p class="text-xl font-headline font-bold text-white" id="stat-mem">--%</p>
+          <div class="mt-2 w-full h-0.5 bg-surface-container-high overflow-hidden">
+            <div class="h-full bg-tertiary transition-all duration-700" id="stat-mem-bar" style="width:0%"></div>
+          </div>
+        </div>
+        <!--Uptime-->
+        <div class="bg-surface-container-low border border-white/10 p-3 relative hover-flicker cursor-crosshair">
+          <p class="text-[9px] font-mono text-outline mb-1 uppercase">Uptime</p>
+          <p class="text-xl font-headline font-bold text-white" id="stat-uptime">00:00:00</p>
+          <p class="text-[8px] font-mono text-primary mt-1">S_STABLE</p>
+        </div>
+        <!--Squad Sync-->
+        <div class="bg-surface-container-low border border-white/10 p-3 relative hover-flicker cursor-crosshair">
+          <p class="text-[9px] font-mono text-outline mb-1 uppercase">Squad_Sync</p>
+          <p class="text-xl font-headline font-bold" style="color:#ff4444;">0/8</p>
+          <div class="flex gap-1 mt-2">
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+            <div class="w-2 h-2" style="background:#ff4444;"></div>
+          </div>
+        </div>
+      </div>
+      <!--System Logs-->
+      <div class="load-sequenced bg-[#131313] border border-white/10 p-3 flex flex-col h-36" id="ui-logs">
+        <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
+          <div class="text-[10px] font-mono text-white flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-secondary animate-pulse"></span>LIVE_SYSTEM_LOGS
+          </div>
+          <div class="text-[9px] font-mono text-white/30 uppercase">MODE: VERBOSE_DEBUG</div>
+        </div>
+        <div class="flex-1 overflow-y-auto space-y-1 font-mono text-[10px] text-white/60" id="system-log-feed"></div>
+      </div>
+    </section>
+    <!--Right Panel -->
+    <section class="load-sequenced w-80 flex flex-col gap-4" id="ui-right">
+      <!--Technical Metadata-->
+      <div class="bg-surface-container-low border border-white/10 flex flex-col" style="min-height:0">
+        <div class="bg-surface-container-high px-4 py-2 flex justify-between items-center border-b border-white/10">
+          <span class="text-[10px] font-mono text-white font-bold uppercase tracking-tighter">TECHNICAL_METADATA</span>
+        </div>
+        <div class="p-3 font-mono text-[10px] text-white/50 space-y-1">
+          <div class="flex justify-between"><span class="text-white/30">SYSTEM_STATUS:</span><span class="text-white" id="meta-status">OK</span></div>
+          <div class="flex justify-between"><span class="text-white/30">ENCRYPTION:</span><span class="text-white">AES_256</span></div>
+          <div class="flex justify-between"><span class="text-white/30">SIGNAL:</span><span class="text-white" id="meta-signal"></span></div>
+          <div class="flex justify-between"><span class="text-white/30">UPTIME:</span><span class="text-white" id="meta-uptime"></span></div>
+          <div class="flex justify-between"><span class="text-white/30">LOG_SEQ:</span><span class="text-white" id="meta-logseq"></span></div>
+          <div class="border-t border-white/10 pt-2 mt-2">
+            <div class="text-[9px] text-white/30 mb-1">VECTOR_COORDINATES</div>
+            <div class="grid grid-cols-2 gap-1">
+              <span>X: <span id="meta-x">144.02</span></span><span>Y: <span id="meta-y">002.99</span></span>
+              <span>Z: <span id="meta-z">881.42</span></span><span>V: <span id="meta-v">1.000</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Tracker -->
+      <div class="bg-surface-container-low border border-white/10 flex flex-col" style="height:200px">
+        <div class="bg-surface-container-high px-4 py-2 flex justify-between items-center border-b border-white/10 shrink-0">
+          <span class="text-[10px] font-mono text-white font-bold uppercase tracking-tighter">LOC_TRACKER_01</span>
+
+          <span class="w-2 h-2 bg-secondary animate-pulse"></span>
+        </div>
+        <div class="flex-1 relative grayscale overflow-hidden">
+          <video class="w-full h-full object-cover" src="Logistic_Tracking.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="p-2 font-mono text-[9px] bg-surface-container-lowest grid grid-cols-2 gap-1 text-outline shrink-0">
+          <div>X: <span id="loc-x">142.9201</span></div><div>Y: <span id="loc-y">-82.1129</span></div>
+          <div>Z: <span id="loc-z">004.1022</span></div><div>V: <span id="loc-v">60 Km/h</span></div>
+        </div>
+      </div>
+      <!--Technical Logs-->
+      <div class="bg-surface-container-low border border-white/10 flex-1 flex flex-col overflow-hidden">
+        <div class="bg-surface-container-high px-4 py-2 border-b border-white/10 shrink-0">
+          <span class="text-[10px] font-mono text-white font-bold uppercase tracking-tighter">TECHNICAL_LOG</span>
+        </div>
+        <div class="flex-1 p-3 font-mono text-[10px] text-white/50 space-y-1.5 overflow-y-auto" id="tech-log-feed"></div>
+        <!--Admin Input-->
+        <div class="border-t border-white/10 px-3 py-2 flex items-center gap-2 bg-surface-container-lowest shrink-0">
+          <span class="text-[10px] font-mono font-bold shrink-0" style="color:#7ec8e3;">[CMD]</span>
+          <input
+            id="admin-input"
+            type="text"
+            placeholder="TRANSMIT_MESSAGE..."
+            class="bg-transparent border-none focus:ring-0 p-0 text-white font-mono text-[10px] w-full uppercase placeholder:text-white/20 outline-none"
+          />
+          <button onclick="sendAdminMessage()" class="shrink-0 text-white/40 hover:text-white transition-colors">
+            <span class="material-symbols-outlined" style="font-size:14px">send</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!--Spotify (Cringe)-->
+  <div class="load-sequenced fixed bottom-6 right-6 z-[60] w-72 bg-surface-container-low border border-white/20 overflow-hidden shadow-2xl" id="spotify-widget">
+    <div class="bg-surface-container-high px-3 py-1.5 flex justify-between items-center border-b border-white/10">
+      <span class="text-[9px] font-mono font-bold text-white uppercase tracking-widest">Cringe_Edgy_Music</span>
+      <button class="text-white/40 hover:text-white transition-colors" onclick="closeSpotify()" title="Close">
+        <span class="material-symbols-outlined" style="font-size:14px">close</span>
+      </button>
+    </div>
+    <iframe
+      id="spotify-iframe"
+      style="border-radius:0px; display:block;"
+      src="https://open.spotify.com/embed/track/6NUmEffjx5tPoyPmpolPMt?utm_source=generator&theme=0"
+      width="100%"
+      height="80"
+      frameBorder="0"
+      allowfullscreen
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  </div>
+  <!--Screen Frame Decoration-->
+  <div class="fixed inset-0 pointer-events-none border-[12px] border-black z-[110]"></div>
+  <div class="fixed top-0 bottom-0 left-0 w-[1px] bg-white/20 z-[111]"></div>
+  <div class="fixed top-0 bottom-0 right-0 w-[1px] bg-white/20 z-[111]"></div>
+  <script src="atherna.js"></script>
+</body>
+</html>
